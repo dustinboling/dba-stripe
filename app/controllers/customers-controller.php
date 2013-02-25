@@ -46,7 +46,7 @@ class Customers_Controller {
 				$this->show( $_GET["customer_id"] );
 				break;
 			case 'new':
-				$this->new_customer();
+				$this->new_charge();
 				break;
 			case 'create':
 				$this->create();
@@ -57,13 +57,13 @@ class Customers_Controller {
 
 	}
 	
-	// GET /wp-admin/admin.php?page=dbastripe_customers
+	// GET /wp-admin/admin.php?page=dbastripe_payments
 	function index() {
 		$customers = Customer::all();
 		require_once( DBASTRIPE_ABSPATH . 'app/views/customers/index.html.php' );
 	}
 	
-	// GET /wp-admin/admin.php?page=dbastripe_customers&action=show&charge_id=ch_0P8aizlxWOnvMb
+	// GET /wp-admin/admin.php?page=dbastripe_payments&action=show&charge_id=ch_0P8aizlxWOnvMb
 	function show( $id = '' ) {
 		try {
 			$customer = Customer::retrieve( $_GET["customer_id"] );
@@ -73,12 +73,12 @@ class Customers_Controller {
 		}
 	}
 	
-	// GET /wp-admin/admin.php?page=dbastripe_customers&action=new
-	function new_customer() {
+	// GET /wp-admin/admin.php?page=dbastripe_payments&action=new
+	function new_charge() {
 		require_once( DBASTRIPE_ABSPATH . 'app/views/customers/new.html.php' );
 	}
 	
-	// POST /wp-admin/admin.php?page=dbastripe_customers
+	// POST /wp-admin/admin.php?page=dbastripe_payments
 	function create( $args = array() ) {
 		
 	}
