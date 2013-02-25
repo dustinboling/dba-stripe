@@ -35,14 +35,37 @@ if( ! class_exists( 'Stripe' ) ) {
 // Retrieve Stripe settings array
 $settings = (array) get_option( 'dbastripe' );
 
-// Get Stripe API keys
-$test_secret_key = esc_attr( $settings['test_secret_key'] );
-$live_secret_key = esc_attr( $settings['live_secret_key'] );
+if( $settings['test_secret_key'] && $settings['live_secret_key'] ) :
 
-// Run Stripe in Live or Test mode.
-$is_live = esc_attr( $settings['is_live'] );
-if( $is_live ) {
-	Stripe::setApiKey( $live_secret_key );
-} else {
-	Stripe::setApiKey( $test_secret_key );
+	print_r( count( $settings ) );
+
+	// Get Stripe API keys
+	$test_secret_key = esc_attr( $settings['test_secret_key'] );
+	$live_secret_key = esc_attr( $settings['live_secret_key'] );
+	
+	// Run Stripe in Live or Test mode.
+	$is_live = esc_attr( $settings['is_live'] );
+	
+	if( isset( $is_live ) ) {
+		Stripe::setApiKey( $live_secret_key );
+	} else {
+		Stripe::setApiKey( $test_secret_key );
+	}
+	
+	// Display admin notice if settings haven't been configured
+	add_action('admin_notices', 'stripe_updated_notice');
+	
+else :
+	
+	// Display admin notice if settings haven't been configured
+	add_action('admin_notices', 'stripe_error_notice');
+	
+endif;
+
+function stripe_error_notice() {
+    echo '<div class="error"><p>Stripe is almost ready, enter your API keys on the <a href="/wp-admin/options-general.php?page=dbastripe_settings">settings page</a>.</p></div>';
+}
+
+function stripe_updated_notice() {
+    echo '<div class="updated"><p><a href="/wp-admin/options-general.php?page=dbastripe_settings">Stripe settings</a> need to be configured.</p></div>';
 }

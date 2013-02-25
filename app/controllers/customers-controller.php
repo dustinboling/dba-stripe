@@ -59,8 +59,12 @@ class Customers_Controller {
 	
 	// GET /wp-admin/admin.php?page=dbastripe_payments
 	function index() {
-		$customers = Customer::all();
-		require_once( DBASTRIPE_ABSPATH . 'app/views/customers/index.html.php' );
+		try {
+			$customers = Customer::all();
+			require_once( DBASTRIPE_ABSPATH . 'app/views/customers/index.html.php' );
+		} catch(Exception $e) {
+			wp_die( $e->getMessage() );
+		}
 	}
 	
 	// GET /wp-admin/admin.php?page=dbastripe_payments&action=show&charge_id=ch_0P8aizlxWOnvMb

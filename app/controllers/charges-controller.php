@@ -59,19 +59,22 @@ class Charges_Controller {
 	
 	// GET /wp-admin/admin.php?page=dbastripe_payments
 	function index() {
-		$charges = Charge::all();
-		require_once( DBASTRIPE_ABSPATH . 'app/views/charges/index.html.php' );
+		try {
+			$charges = Charge::all();
+			require_once( DBASTRIPE_ABSPATH . 'app/views/charges/index.html.php' );
+		} catch(Exception $e) {
+			wp_die( $e->getMessage() );
+		}
 	}
 	
 	// GET /wp-admin/admin.php?page=dbastripe_payments&action=show&charge_id=ch_0P8aizlxWOnvMb
 	function show( $id = '' ) {
 		try {
 			$charge = Charge::retrieve( $id );
+			require_once( DBASTRIPE_ABSPATH . 'app/views/charges/show.html.php' );
 		} catch(Exception $e) {
 			wp_die( $e->getMessage() );
 		}
-		
-		require_once( DBASTRIPE_ABSPATH . 'app/views/charges/show.html.php' );
 	}
 	
 	// GET /wp-admin/admin.php?page=dbastripe_payments&action=new
