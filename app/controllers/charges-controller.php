@@ -30,6 +30,7 @@ require_once( DBASTRIPE_ABSPATH . 'app/models/charge.php' );
 class Charges_Controller {
 	function __construct() {
 		add_action('admin_menu', array( &$this, 'admin_menu'));
+		add_action('admin_enqueue_scripts', array( &$this, 'scripts' ) ); 
 	}
 	
 	function admin_menu() {
@@ -85,6 +86,11 @@ class Charges_Controller {
 	// POST /wp-admin/admin.php?page=dbastripe_payments
 	function create( $args = array() ) {
 		
+	}
+	
+	function scripts() {
+		wp_enqueue_script( 'stripe', 'https://js.stripe.com/v1/', array(), '1' );
+		wp_enqueue_script( 'stripe-charges', DBASTRIPE_URL . 'app/assets/javascripts/charges.js', array( 'stripe' ), '1', true );
 	}
 }
 new Charges_Controller;

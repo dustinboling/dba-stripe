@@ -35,6 +35,8 @@ include_once( DBASTRIPE_ABSPATH . 'app/controllers/settings-controller.php' );
 include_once( DBASTRIPE_ABSPATH . 'app/controllers/overview-controller.php' );
 include_once( DBASTRIPE_ABSPATH . 'app/controllers/customers-controller.php' );
 include_once( DBASTRIPE_ABSPATH . 'app/controllers/charges-controller.php' );
+include_once( DBASTRIPE_ABSPATH . 'app/controllers/coupons-controller.php' );
+include_once( DBASTRIPE_ABSPATH . 'app/controllers/plans-controller.php' );
 
 // Admin Styles
 add_action( 'admin_head', 'dbastripe_styles' );

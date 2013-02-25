@@ -25,38 +25,15 @@
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
-/**
- * Stripe.com Payment Processing
- */
-if( ! class_exists( 'Stripe' ) ) {
-	include_once( DBASTRIPE_ABSPATH . 'lib/stripe/lib/Stripe.php' );
-}
-
-// Retrieve Stripe settings array
-$settings = (array) get_option( 'dbastripe' );
-
-if( $settings['test_secret_key'] && $settings['live_secret_key'] ) :
-
-	// Get Stripe API keys
-	$test_secret_key = esc_attr( $settings['test_secret_key'] );
-	$live_secret_key = esc_attr( $settings['live_secret_key'] );
+class Coupon {
 	
-	// Run Stripe in Live or Test mode.
-	$is_live = esc_attr( $settings['is_live'] );
-	
-	if( isset( $is_live ) ) {
-		Stripe::setApiKey( $live_secret_key );
-	} else {
-		Stripe::setApiKey( $test_secret_key );
+	function all( $count = 100, $offset = 0 ) {
+		$coupons = Stripe_Coupon::all( array( 'count' => $count, 'offset' => $offset ) );
+		
+		return $coupons["data"];
 	}
 	
-else :
-	
-	// Display admin notice if settings haven't been configured
-	add_action('admin_notices', 'stripe_error_notice');
-	
-endif;
-
-function stripe_error_notice() {
-    echo '<div class="error"><p>Stripe is almost ready, enter your API keys on the <a href="/wp-admin/options-general.php?page=dbastripe_settings">settings page</a>.</p></div>';
+	function retrieve( $id ) {
+		return Stripe_Coupon::retrieve( $id );
+	}
 }
