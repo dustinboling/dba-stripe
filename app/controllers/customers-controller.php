@@ -2,7 +2,7 @@
 /**
  * Copyright (c) 2013 Dustin Boling Associates
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * Permission is hereby granted, free of customer, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -46,7 +46,7 @@ class Customers_Controller {
 				$this->show( $_GET["customer_id"] );
 				break;
 			case 'new':
-				$this->new_charge();
+				$this->new_customer();
 				break;
 			case 'create':
 				$this->create();
@@ -67,7 +67,7 @@ class Customers_Controller {
 		}
 	}
 	
-	// GET /wp-admin/admin.php?page=dbastripe_payments&action=show&charge_id=ch_0P8aizlxWOnvMb
+	// GET /wp-admin/admin.php?page=dbastripe_payments&action=show&customer_id=ch_0P8aizlxWOnvMb
 	function show( $id = '' ) {
 		try {
 			$customer = Customer::retrieve( $_GET["customer_id"] );
@@ -78,7 +78,7 @@ class Customers_Controller {
 	}
 	
 	// GET /wp-admin/admin.php?page=dbastripe_payments&action=new
-	function new_charge() {
+	function new_customer() {
 		require_once( DBASTRIPE_ABSPATH . 'app/views/customers/new.html.php' );
 	}
 	
