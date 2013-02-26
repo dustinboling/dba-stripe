@@ -38,10 +38,9 @@ class Customers_List_Table extends WP_List_Table {
 	 */
 	function get_columns() {
 		$columns = array(
-			'customer_description'	=> __('Description'),
+			'customer_description'	=> __('Name'),
 			'customer_email'		=> __('Email'),
-			'customer_id'			=> __('ID'),
-			'customer_created'		=> __('Created')
+			'customer_id'			=> __('Stripe ID'),
 		);
 		return $columns;
 	}
@@ -74,8 +73,6 @@ class Customers_List_Table extends WP_List_Table {
 				return $item->email;
 			case 'customer_id':
 				return $item->id;
-			case 'customer_created':
-				return date( 'M d, Y', $item->created );
 			default:
 				return print_r( $item, true ); //Show the whole array for troubleshooting purposes
 		}
@@ -84,8 +81,44 @@ class Customers_List_Table extends WP_List_Table {
 $CustomersListTable = new Customers_List_Table( $customers );
 $CustomersListTable->prepare_items();
 ?>
-<div class="wrap">
-	<div id="icon-options-general" class="icon32"></div>
+<div class="wrap nosubsub">
+	<div id="icon-edit" class="icon32 icon32-posts-post"></div>
 	<h2>Stripe Customers</h2>
-	<?php $CustomersListTable->display() ?>
+	<div id="ajax-response"></div>
+	<div id="col-container">
+		<div id="col-right">
+			<div class="col-wrap">
+				<?php $CustomersListTable->display() ?>
+			</div>
+		</div>
+		<div id="col-left">
+			<div class="col-wrap">
+				<div class="form-wrap">
+					<h3>Add New Customer</h3>
+					<form id="addtag" method="post" action="edit-tags.php" class="validate">
+						<input type="hidden" name="action" value="add-tag">
+						<input type="hidden" name="screen" value="edit-category">
+						<input type="hidden" name="taxonomy" value="category">
+						<input type="hidden" name="post_type" value="post">
+						<input type="hidden" id="_wpnonce_add-tag" name="_wpnonce_add-tag" value="fd59a283b8"><input type="hidden" name="_wp_http_referer" value="/wp-admin/edit-tags.php?taxonomy=category">
+						
+						<div class="form-field form-required">
+							<label for="tag-name">Full Name</label>
+							<input name="tag-name" id="tag-name" type="text" value="" size="40" aria-required="true">
+							<p>An individuals full name, or business name.</p>
+						</div>
+						
+						<div class="form-field">
+							<label for="tag-slug">Email</label>
+							<input name="slug" id="tag-slug" type="text" value="" size="40">
+							<p>If this is a business, enter the email address of the primary contact.</p>
+						</div>
+						
+						<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Add New Customer"></p>
+						</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 </div>
