@@ -31,7 +31,7 @@ include_once( DBASTRIPE_ABSPATH . 'config/libraries.php' );
 // Settings Page
 include_once( DBASTRIPE_ABSPATH . 'app/controllers/settings-controller.php' );
 
-// Stripe Pages
+// General Pages
 include_once( DBASTRIPE_ABSPATH . 'app/controllers/overview-controller.php' );
 include_once( DBASTRIPE_ABSPATH . 'app/controllers/customers-controller.php' );
 include_once( DBASTRIPE_ABSPATH . 'app/controllers/charges-controller.php' );
