@@ -24,9 +24,9 @@
  * @copyright 2013 Dustin Boling Associates
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
  */
- 
-require_once( DBASTRIPE_ABSPATH . 'app/models/customer.php' );
 require_once( DBASTRIPE_ABSPATH . 'app/models/charge.php' );
+require_once( DBASTRIPE_ABSPATH . 'app/models/customer.php' );
+require_once( DBASTRIPE_ABSPATH . 'app/models/transfer.php' );
 
 class Overview_Controller {
 	function __construct() {
@@ -41,7 +41,16 @@ class Overview_Controller {
 		if ( ! current_user_can( 'manage_options' ) )  {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
-		require_once( DBASTRIPE_ABSPATH . 'app/views/overview/index.html.php' );
+		
+		try{
+			$charges = Charge::all( 10 );
+			$customers = Customer::all( 10 );
+			$transfers = Transfer::all( 10 );
+			require_once( DBASTRIPE_ABSPATH . 'app/views/overview/index.html.php' );
+		} catch( Exception $e ) {
+			wp_die( $e );
+		}
+		
 	}
 }
 new Overview_Controller;

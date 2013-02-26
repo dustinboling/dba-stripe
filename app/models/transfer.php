@@ -25,16 +25,15 @@
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
-class Charge {
+class Transfer {
 	
 	function all( $count = 100, $offset = 0 ) {
-		$charges = Stripe_Charge::all( array( 'count' => $count, 'offset' => $offset, "expand" => array("data.customer") ) );
+		$transfers = Stripe_Transfer::all( array( 'count' => $count, 'offset' => $offset ) );
 		
-		return $charges["data"];
+		return $transfers["data"];
 	}
 	
-	// Retrieve a single charge
-	function retrieve( $id = '' ) {
-		return Stripe_Charge::retrieve( $id );
+	function retrieve( $id ) {
+		return Stripe_Transfer::retrieve( $id );
 	}
 }
