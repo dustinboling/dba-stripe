@@ -38,11 +38,12 @@ class Plans_List_Table extends WP_List_Table {
 	 */
 	function get_columns() {
 		$columns = array(
-			'plan_created'	=> __('Created'),
+			'plan_name'		=> __('Plan Name'),
+			'plan_id'		=> __('ID'),
+			'plan_interval'	=> __('Interval'),
+			'plan_interval_count' => __('Interval Count'),
+			'plan_trial'	=> __('Trial Days'),
 			'plan_amount'	=> __('Amount'),
-			'plan_status'	=> __('Status'),
-			'plan_id'		=> __('Plan ID')
-			
 		);
 		return $columns;
 	}
@@ -57,11 +58,11 @@ class Plans_List_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 	}
 	
-	function column_plan_created( $item ) {
+	function column_plan_name( $item ) {
 		$actions = array(
 			'view' => sprintf('<a href="?page=%s&action=%s&plan_id=%s">View</a>', $_REQUEST["page"], 'show', $item->id )
 		);
-		return sprintf('%1$s %2$s', date( 'M d, Y', $item->created ), $this->row_actions( $actions ) );
+		return sprintf('%1$s %2$s', $item->name, $this->row_actions( $actions ) );
 	}
 	
 	/**
@@ -69,16 +70,21 @@ class Plans_List_Table extends WP_List_Table {
 	 */
 	function column_default( $item, $column_name ) {
 		switch( $column_name ) { 
-			case 'plan_created':
-				return date( 'M d, Y', $item->created );
-			case 'plan_amount':
-				return '$' . money_format( '%i', $item->amount/100 );
+			case 'plan_name':
+				// Currently running through $this->column_plan_name()
+				//return $item->name;
 			case 'plan_id':
 				return $item->id;
-			case 'plan_status':
-				return $item->paid ? 'Paid' : 'Unpaid';
+			case 'plan_interval':
+				return $item->interval;
+			case 'plan_interval_count':
+				return $item->interval_count;
+			case 'plan_trial':
+				return $item->trial_period_days;
+			case 'plan_amount':
+				return '$' . money_format( '%i', $item->amount/100 );
 			default:
-				return print_r( $item, true ); //Show the whole array for troubleshooting purposes
+				return '<pre>' . print_r( $item, true ) . '</pre>'; //Show the whole array for troubleshooting purposes
 		}
 	}
 }

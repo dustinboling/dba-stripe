@@ -38,10 +38,15 @@ class Coupons_List_Table extends WP_List_Table {
 	 */
 	function get_columns() {
 		$columns = array(
-			'coupon_created'	=> __('Created'),
-			'coupon_amount'	=> __('Amount'),
-			'coupon_status'	=> __('Status'),
-			'coupon_id'		=> __('Coupon ID')
+			'coupon_id'					=> __('ID'),
+			'coupon_percent_off'		=> __('Percent off'),
+			'coupon_amount_off'			=> __('Amount off'),
+			'coupon_duration_in_months'	=> __('Months'),
+			'coupon_duration'			=> __('Duration'),
+			'coupon_redeem_by'			=> __('Expires'),
+			'coupon_max_redemptions'	=> __('Max redemptions'),
+			'coupon_times_redeemed'		=> __('Redeemed'),
+			
 			
 		);
 		return $columns;
@@ -57,11 +62,12 @@ class Coupons_List_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 	}
 	
-	function column_coupon_created( $item ) {
+	function column_coupon_id( $item ) {
 		$actions = array(
 			'view' => sprintf('<a href="?page=%s&action=%s&coupon_id=%s">View</a>', $_REQUEST["page"], 'show', $item->id )
 		);
-		return sprintf('%1$s %2$s', date( 'M d, Y', $item->created ), $this->row_actions( $actions ) );
+		return sprintf('%1$s %2$s', sprintf('<a href="?page=%s&action=%s&coupon_id=%s">%s</a>', $_REQUEST["page"], 'show', $item->id, $item->id ), $this->row_actions( $actions ) );
+		return sprintf('%1$s %2$s', '<a href="?page=%s&action=show&coupon_id=%s">' . $item->id . '</a>', $this->row_actions( $actions ) );
 	}
 	
 	/**
@@ -69,16 +75,25 @@ class Coupons_List_Table extends WP_List_Table {
 	 */
 	function column_default( $item, $column_name ) {
 		switch( $column_name ) { 
-			case 'coupon_created':
-				return date( 'M d, Y', $item->created );
-			case 'coupon_amount':
-				return '$' . money_format( '%i', $item->amount/100 );
 			case 'coupon_id':
 				return $item->id;
-			case 'coupon_status':
-				return $item->paid ? 'Paid' : 'Unpaid';
+			case 'coupon_percent_off':
+				return $item->percent_off . '%';
+			case 'coupon_amount_off':
+				//return '<pre>' . print_r( $item, true ) . '</pre>';
+				return '$' . money_format( '%i', $item->amount_off/100 );
+			case 'coupon_duration_in_months':
+				return $item->duration_in_months;
+			case 'coupon_duration':
+				return $item->duration;
+			case 'coupon_redeem_by':
+				return date( 'M d, Y', $item->redeem_by );
+			case 'coupon_max_redemptions':
+				return $item->max_redemptions;
+			case 'coupon_times_redeemed':
+				return $item->times_redeemed;
 			default:
-				return print_r( $item, true ); //Show the whole array for troubleshooting purposes
+				return '<pre>' . print_r( $item, true ) . '</pre>'; //Show the whole array for troubleshooting purposes
 		}
 	}
 }
